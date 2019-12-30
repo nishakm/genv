@@ -1,18 +1,16 @@
-# Imitation of python's virtualenv for go
-# Because a global gopath without a package manager is insane
-# Run this using "source activate" *from bash*
+package script
 
+import "fmt"
 
-# run deactivate to restore the old gopath
-deactivate () {
+var script = `deactivate () {
   if [ -n "${OLD_GOPATH:-}" ] ; then
     GOPATH="${OLD_GOPATH:-}"
     export GOPATH
   fi
 }
-		
+
 # our new go path is the current working directory
-NEW_GOPATH=`pwd`
+NEW_GOPATH=%s
 
 # store current gopath
 OLD_GOPATH=$GOPATH
@@ -20,3 +18,7 @@ OLD_GOPATH=$GOPATH
 # set new gopath
 GOPATH="$NEW_GOPATH"
 export GOPATH
+`
+func Generate(workspace string) string {
+    return fmt.Sprintf(script, workspace)
+}
