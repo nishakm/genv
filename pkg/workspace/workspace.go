@@ -14,11 +14,19 @@ func check(e error) {
     }
 }
 
+func Gopath(folderpath string) string {
+    gopath := filepath.Join(folderpath, "gopath")
+    return gopath
+}
+
 func Create(folder string) string {
     cwd, err := os.Getwd()
     check(err)
     abs_path := filepath.Join(cwd, folder)
-    check(os.Mkdir(abs_path, 0777))
+    go_src := filepath.Join(abs_path, "gopath", "src")
+    go_bin := filepath.Join(abs_path, "gopath", "bin")
+    check(os.MkdirAll(go_src, 0777))
+    check(os.MkdirAll(go_bin, 0777))
     return abs_path
 }
 

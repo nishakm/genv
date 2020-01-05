@@ -13,9 +13,11 @@ import (
 
 func main() {
     folder := os.Args[1]
-    // create the folder
+    // create the workspace with the folder
     pathtoactivate := workspace.Create(folder)
+    // get the location of the new gopath
+    gopath := workspace.Gopath(pathtoactivate)
     // write the script
-    workspace.WriteScript(pathtoactivate, script.Generate(pathtoactivate))
-    fmt.Println("Workspace created at %s", pathtoactivate)
+    workspace.WriteScript(pathtoactivate, script.Generate(gopath, folder))
+    fmt.Printf("Workspace created at %s\n", pathtoactivate)
 }
