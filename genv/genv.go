@@ -21,11 +21,14 @@ func main() {
     flag.Parse()
     folder := flag.Arg(0)
     fmt.Println("version", *verPtr)
+
     // create the workspace with the folder
-    pathtoactivate := workspace.Create(folder)
+    folderpath := workspace.Create(folder)
     // get the location of the new gopath
-    gopath := workspace.Gopath(pathtoactivate)
+    gopath := workspace.Gopath(folderpath)
+    // get the location of the new environment path
+    envpath := workspace.Envpath(folderpath)
     // write the script
-    workspace.WriteScript(pathtoactivate, script.Generate(gopath, folder))
-    fmt.Printf("Workspace created at %s\n", pathtoactivate)
+    workspace.WriteScript(envpath, script.Generate(gopath, envpath, folder))
+    fmt.Printf("Workspace created at %s\n", folderpath)
 }
