@@ -41,3 +41,7 @@ func WriteScript(workdir string, script string) {
     output := []byte(script)
     check(ioutil.WriteFile(filepath.Join(workdir, activatescript), output, 0755))
 }
+
+func SetGoSym(origPath string, newPath string) {
+    check(os.Symlink(origPath, filepath.Join(newPath, "go")))
+}

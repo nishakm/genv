@@ -10,6 +10,7 @@ import (
         "flag"
         "github.com/nishakm/genv/pkg/script"
         "github.com/nishakm/genv/pkg/workspace"
+        "github.com/nishakm/genv/pkg/versions"
 )
 
 func main() {
@@ -20,8 +21,6 @@ func main() {
     verPtr := flag.String("version", "", "Go version")
     flag.Parse()
     folder := flag.Arg(0)
-    fmt.Println("version", *verPtr)
-
     // create the workspace with the folder
     folderpath := workspace.Create(folder)
     // get the location of the new gopath
@@ -31,4 +30,11 @@ func main() {
     // write the script
     workspace.WriteScript(envpath, script.Generate(gopath, envpath, folder))
     fmt.Printf("Workspace created at %s\n", folderpath)
+    // if a version is provided, make a symlink
+    if *verPtr != "" {
+        goroot := versions.GetGoRoot(*verPtr)
+        if goroot != "" {
+            workspace.SetGoSym(goroot, envpath)
+        }
+    }
 }
