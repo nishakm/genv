@@ -6,7 +6,7 @@ Go programmers typically put all their code into one workspace. Over time, it ge
 ## How is it supposed to work?
 To create a development environment
 ```
-$ go get genv
+$ go get github.com/nishakm/genv
 $ genv test
 $ cd test
 $ source bin/activate
