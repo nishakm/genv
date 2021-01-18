@@ -29,6 +29,3 @@ $ source bin/activate
 (test)$ go version
 go version go1.14.4 linux/amd64
 ``` 
-
-## Is this method of development endorsed by the Golang community?
-No. You are free to use this for your own development. However, as of this writing, the community isn't developing in this way. 
