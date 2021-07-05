@@ -8,9 +8,12 @@ import (
         "fmt"
         "os"
         "flag"
+        "path/filepath"
+
         "github.com/nishakm/genv/pkg/script"
         "github.com/nishakm/genv/pkg/workspace"
         "github.com/nishakm/genv/pkg/versions"
+        "github.com/nishakm/genv/pkg/project"
 )
 
 func main() {
@@ -18,7 +21,8 @@ func main() {
         fmt.Fprintf(os.Stderr, "Usage: %s [options] folder\n", os.Args[0])
         flag.PrintDefaults()
     }
-    verPtr := flag.String("version", "", "Go version")
+    verPtr := flag.String("version", "", "Provide a Go version to use. Eg: go1.16.5")
+    projPtr := flag.String("project", "", "Provide a Git project to clone. Eg: git@github.com/nishakm/genv")
     flag.Parse()
     folder := flag.Arg(0)
     // create the workspace with the folder
@@ -36,5 +40,11 @@ func main() {
         if goroot != "" {
             workspace.SetGoSym(goroot, envpath)
         }
+    }
+    // if a git project is provided, clone it in the required location
+    if *projPtr != "" {
+        srcpath := workspace.Srcpath(gopath)
+        projPath := filepath.Join(srcpath, project.GetProjPath(*projPtr))
+        project.CloneProject(*projPtr, projPath)
     }
 }

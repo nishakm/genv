@@ -41,6 +41,10 @@ func Binpath(gopath string) string {
     return filepath.Join(gopath, "bin")
 }
 
+func Srcpath(gopath string) string {
+    return filepath.Join(gopath, "src")
+}
+
 func WriteScript(workdir string, script string) {
     output := []byte(script)
     check(ioutil.WriteFile(filepath.Join(workdir, activatescript), output, 0755))
