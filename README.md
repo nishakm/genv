@@ -29,3 +29,14 @@ $ source bin/activate
 (test)$ go version
 go version go1.14.4 linux/amd64
 ``` 
+
+## Cloning a Go project
+If you want to seed the dev environment with a specific Go project, you can do the following:
+```
+$ genv -project git@github.com/nishakm/genv test
+$ cd test
+$ source bin/activate
+(test)$ cd gopath/src/github.com/nishakm/genv
+```
+
+Currently GitHub cloning via SSH and HTTPS are supported.
