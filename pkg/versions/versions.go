@@ -38,8 +38,8 @@ func getGoVersion(go_version string) error {
     }
     dlErr := exec.Command(go_version, "download").Run()
     if dlErr != nil {
-        fmt.Printf("Error in downloading go version %s\n", go_version)
-        return dlErr
+        // there may be an error because the version is already downloaded
+        fmt.Printf("Download error: %s", dlErr)
     }
     return nil
 }
