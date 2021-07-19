@@ -9,8 +9,6 @@ package cmd
 
 import (
 	"fmt"
-    "flag"
-    "fmt"
     "os"
     "path/filepath"
 
