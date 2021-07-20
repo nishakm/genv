@@ -63,7 +63,7 @@ func main() {
             os.Exit(1)
         }
         envtoolPath := filepath.Join(workspace.Binpath(gopath), "envtool")
-        if err := os.Rename(result, envtoolPath); err != nil {
+        if err := os.Rename(string(result), envtoolPath); err != nil {
             fmt.Println("Error moving envtool to env path: %s", err)
             os.Exit(1)
         }
