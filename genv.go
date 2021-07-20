@@ -7,6 +7,7 @@ package main
 import (
         "fmt"
         "os"
+        "os/exec"
         "flag"
         "path/filepath"
 
@@ -23,6 +24,7 @@ func main() {
     }
     verPtr := flag.String("version", "", "Provide a Go version to use. Eg: go1.16.5")
     projPtr := flag.String("project", "", "Provide a Git project to clone. Eg: git@github.com/nishakm/genv")
+    noTools := flag.Bool("no-tools", false, "Set the no-tools flag to avoid installing envtool in your environment")
     flag.Parse()
     folder := flag.Arg(0)
     // create the workspace with the folder
@@ -46,5 +48,25 @@ func main() {
         srcpath := workspace.Srcpath(gopath)
         projPath := filepath.Join(srcpath, project.GetProjPath(*projPtr))
         project.CloneProject(*projPtr, projPath)
+    }
+    // if we haven't explicitly said to NOT install envtool, we attempt to install it
+    if *noTools == false {
+        // TODO: account for the go version that may be provided
+        getErr := exec.Command("go", "get", "github.com/nishakm/genv/envtool").Run()
+        if getErr != nil {
+            fmt.Println("Error installing envtool: %s", getErr)
+            os.Exit(1)
+        }
+        result, err := exec.Command("which", "envtool").Output()
+        if err != nil {
+            fmt.Println("Error finding envtool: %s", err)
+            os.Exit(1)
+        }
+        envtoolPath := filepath.Join(workspace.Binpath(gopath), "envtool")
+        if err := os.Rename(result, envtoolPath); err != nil {
+            fmt.Println("Error moving envtool to env path: %s", err)
+            os.Exit(1)
+        }
+        fmt.Println("envtool installed")
     }
 }
