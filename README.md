@@ -17,8 +17,9 @@ $ deactivate
 ```
 To remove the dev environment
 ```
-$ rm -rf test
+$ sudo rm -rf test
 ```
+(note: root permissions are requires as go sets all the file permissions to read only)
 
 ## Controlling go versions
 You can create dev environments for specific go versions. If the version doesn't exist in your dev environment, genv will download it for you.
