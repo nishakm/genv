@@ -6,7 +6,7 @@ Go programmers typically put all their code into one workspace. Over time, it ge
 ## How to use it
 To create a development environment
 ```
-$ go get github.com/nishakm/genv
+$ go install github.com/nishakm/genv@latest
 $ genv test
 $ cd test
 $ source bin/activate
@@ -19,7 +19,7 @@ To remove the dev environment
 ```
 $ sudo rm -rf test
 ```
-(note: root permissions are requires as go sets all the file permissions to read only)
+(note: root permissions are required as go sets all the file permissions to read only)
 
 ## Controlling go versions
 You can create dev environments for specific go versions. If the version doesn't exist in your dev environment, genv will download it for you.
