@@ -66,10 +66,25 @@ func main() {
             os.Exit(1)
         }
         envtoolPath := filepath.Join(workspace.Binpath(gopath), "envtool")
-        if err := os.Rename(string(result), envtoolPath); err != nil {
-            fmt.Println("Error moving envtool to env path: %s", err)
-            os.Exit(1)
-        }
+        // copy binary over to the environment
+        copyFile(string(result), envtoolPath)
         fmt.Println("envtool installed")
     }
+}
+
+// Go doesn't have a builtin copy function to copy files
+// from one place to another. So I'll make my own
+func copyFile(srcPath string, destPath string) {
+    from, err := ioutil.ReadFile(srcPath)
+    if err != nil {
+        fmt.Println("Error reading envtool binary: %s", err)
+        os.Exit(1)
+    }
+    err := ioutil.WriteFile(destPath)
+    if err != nil {
+        fmt.Println("Error writing envtool to env path: %s", err)
+        os.Exit(1)
+    }
+    
+
 }
