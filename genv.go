@@ -6,6 +6,7 @@ package main
 
 import (
         "fmt"
+        "io/ioutil"
         "os"
         "os/exec"
         "flag"
@@ -51,15 +52,21 @@ func main() {
     }
     // if we haven't explicitly said to NOT install envtool, we attempt to install it
     if *noTools == false {
+        // install the envtool binary
         if *verPtr != "" {
-            getErr := exec.Command(*verPtr, "install", "github.com/nishakm/genv/envtool@latest").Run()
+            err := exec.Command(*verPtr, "install", "github.com/nishakm/genv/envtool@latest").Run()
+            if err != nil {
+                fmt.Println("Error installing envtool: %s", err)
+                os.Exit(1)
+            }
         } else {
-            getErr := exec.Command("go", "install", "github.com/nishakm/genv/envtool@latest").Run()
+            err := exec.Command("go", "install", "github.com/nishakm/genv/envtool@latest").Run()
+            if err != nil {
+                fmt.Println("Error installing envtool: %s", err)
+                os.Exit(1)
+            }
         }
-        if getErr != nil {
-            fmt.Println("Error installing envtool: %s", getErr)
-            os.Exit(1)
-        }
+        // find the path the binary is located
         result, err := exec.Command("which", "envtool").Output()
         if err != nil {
             fmt.Println("Error finding envtool: %s", err)
@@ -75,14 +82,14 @@ func main() {
 // Go doesn't have a builtin copy function to copy files
 // from one place to another. So I'll make my own
 func copyFile(srcPath string, destPath string) {
-    from, err := ioutil.ReadFile(srcPath)
+    content, err := ioutil.ReadFile(srcPath)
     if err != nil {
         fmt.Println("Error reading envtool binary: %s", err)
         os.Exit(1)
     }
-    err := ioutil.WriteFile(destPath)
+    writeErr := ioutil.WriteFile(destPath, content, 0755)
     if err != nil {
-        fmt.Println("Error writing envtool to env path: %s", err)
+        fmt.Println("Error writing envtool to env path: %s", writeErr)
         os.Exit(1)
     }
     
