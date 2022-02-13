@@ -51,8 +51,11 @@ func main() {
     }
     // if we haven't explicitly said to NOT install envtool, we attempt to install it
     if *noTools == false {
-        // TODO: account for the go version that may be provided
-        getErr := exec.Command("go", "get", "github.com/nishakm/genv/envtool").Run()
+        if *verPtr != "" {
+            getErr := exec.Command(*verPtr, "install", "github.com/nishakm/genv/envtool@latest").Run()
+        } else {
+            getErr := exec.Command("go", "install", "github.com/nishakm/genv/envtool@latest").Run()
+        }
         if getErr != nil {
             fmt.Println("Error installing envtool: %s", getErr)
             os.Exit(1)
